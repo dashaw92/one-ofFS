@@ -19,3 +19,18 @@ let commonPrefix (strs: string list) =
     |> Seq.map string
     |> Seq.rev
     |> String.concat ""
+
+let commonPrefix2 (strs: string list) =
+    let rec aux prefix strs =
+        if List.length strs = 0 || List.exists (List.length >> (=) 0) strs then prefix
+        else
+            let pick = List.head <| List.head strs
+            if List.forall (List.head >> (=) pick) strs then
+                aux (pick :: prefix) (strs |> List.map List.tail)
+            else prefix
+
+    let strs = List.map Seq.toList strs
+    aux [] strs 
+    |> List.rev
+    |> Array.ofList
+    |> System.String.Concat
